@@ -1,0 +1,36 @@
+---
+layout: post
+title:  "Let's sketch chroot"
+date:   2020-06-17 13:35:18 +0200
+categories: linux security
+---
+
+Using `chroot` for ringfencing areas of a filesystem is relatively straightforward and [this](https://www.howtogeek.com/441534/how-to-use-the-chroot-command-on-linux/) contains quite a nice tutorial addressing the basic usage.
+
+Following is a commandline summary allowing fast-forwarding throught the article in order to quickly deploy a fresh chroot environment.
+
+{% highlight bash %}
+# set the chroot destination dir
+mkdir chrootroot
+cd chrootroot
+chr=`pwd`
+
+# lay down structure and copy binaries 
+mkdir -p $chr/{bin,lib,lib64}
+cp -v /bin/{bash,touch,ls,rm} $chr/bin
+
+# copy dependencies
+list="$(ldd /bin/bash | egrep -o '/lib.*\.[0-9]')"
+for i in $list; do cp -v --parents "$i" "${chr}"; done
+list="$(ldd /bin/touch | egrep -o '/lib.*\.[0-9]')"
+for i in $list; do cp -v --parents "$i" "${chr}"; done
+list="$(ldd /bin/ls | egrep -o '/lib.*\.[0-9]')"
+for i in $list; do cp -v --parents "$i" "${chr}"; done
+list="$(ldd /bin/rm | egrep -o '/lib.*\.[0-9]')"
+for i in $list; do cp -v --parents "$i" "${chr}"; done
+
+# enter
+sudo chroot $chr /bin/bash
+{% endhighlight %}
+
+More binaries can be added later on in a similar fashion, depending on the purpose of a particular environment.
