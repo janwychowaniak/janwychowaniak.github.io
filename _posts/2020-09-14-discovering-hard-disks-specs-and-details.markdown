@@ -59,6 +59,32 @@ Device     Boot     Start        End   Sectors   Size Id Type
 /dev/sda8       618153984  905840639 287686656 137,2G 83 Linux
 ```
 
+Checking in the _proc_ pseudo-filesystem:
+
+```bash
+cat /proc/partitions
+```
+
+An example output:
+
+```
+major minor  #blocks  name
+
+   7        0     100084 loop0
+   7        1     100044 loop1
+   7        2      18276 loop2
+   7        3      69184 loop3
+   7        4      69184 loop4
+   8        0  500107608 sda
+   8        1   78638048 sda1
+   8        2          1 sda2
+   8        3   47186264 sda3
+   8        5    5764096 sda5
+   8        6  205520896 sda6
+   8        7   19147776 sda7
+   8        8  143843328 sda8
+```
+
 ### Hardware information 
 
 Drive identification info:
@@ -247,7 +273,34 @@ Device identification VPD page:
       vendor specific: SSDPR-CX400-512                         SERIALNO           
 ```
 
-More refrence on all the above [here](https://www.cyberciti.biz/faq/find-hard-disk-hardware-specs-on-linux/) and [here](https://www.cyberciti.biz/tips/sdparm-linux-scsi-device-attribute.html).
+Another one similar to the above:
+
+```bash
+lsscsi
+```
+
+```
+[0:0:0:0]    disk    ATA      SSDPR-CX400-512  61  /dev/sda 
+[4:0:0:0]    disk    TOSHIBA  MK5061GSYN       03  /dev/sdb 
+```
+
+Finally, from the _proc_ sub-filesystem on SCSI/Sata devices:
+
+```bash
+cat /proc/scsi/scsi
+```
+
+```
+Attached devices:
+Host: scsi0 Channel: 00 Id: 00 Lun: 00
+  Vendor: ATA      Model: SSDPR-CX400-512  Rev: 61
+  Type:   Direct-Access                    ANSI  SCSI revision: 05
+Host: scsi4 Channel: 00 Id: 00 Lun: 00
+  Vendor: TOSHIBA  Model: MK5061GSYN       Rev: 03
+  Type:   Direct-Access                    ANSI  SCSI revision: 06
+```
+
+More reference on all the above [here](https://www.cyberciti.biz/faq/find-hard-disk-hardware-specs-on-linux/) and [here](https://www.cyberciti.biz/tips/sdparm-linux-scsi-device-attribute.html).
 
 ---
 #

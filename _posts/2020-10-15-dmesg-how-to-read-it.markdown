@@ -5,7 +5,7 @@ date:   2020-10-15 13:35:18 +0200
 categories: linux hardware
 ---
 
-`dmesg` prints or controls the kernel ring buffer, allowing e.g. reviewing and monitoring hardware device and driver messages and more.
+`dmesg` prints or controls the Linux kernel ring buffer, allowing e.g. reviewing and monitoring hardware device and driver messages and more.
 
 The default output format that the tool offers I consider to be of limited friendliness.
 Let's quickly summarise on the most useful or common options for output format control.
