@@ -73,6 +73,10 @@ _Sidenote_: Depending on a particular disk type, output from the above commands 
 
 End _Sidenote_.
 
+There is also the `gnome-disks` app giving visual insight:
+
+![image gnomedisks](/assets/img/disk-health-and-smart-info-lookup/gnomeDisks.png)
+
 ### Lookup: Windows
 
 There is a couple of programs out there allowing to quickly assess disk health and to see the parameters of interest. My favourites follow.
