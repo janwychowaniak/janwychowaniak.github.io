@@ -15,6 +15,7 @@ lsusb
 
 gives something like:
 
+{:.jwoutput}
 ```
 Bus 002 Device 003: ID 04f2:b105 Chicony Electronics Co., Ltd 
 Bus 002 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
@@ -46,6 +47,7 @@ lsusb -t
 
 which prints, let's say:
 
+{:.jwoutput}
 ```
 /:  Bus 08.Port 1: Dev 1, Class=root_hub, Driver=uhci_hcd/2p, 12M
 /:  Bus 07.Port 1: Dev 1, Class=root_hub, Driver=uhci_hcd/2p, 12M
@@ -91,6 +93,7 @@ and then to pay attention to what happens after plugging something in.
 
 An example `dmesg` output produced after plugging the mentioned Wireless Keyboard/Mouse may resemble the following:
 
+{:.jwoutput}
 ```
 kern  :info  : [lis14 22:14] usb 6-2: new full-speed USB device number 4 using uhci_hcd
 kern  :info  : [  +0,199069] usb 6-2: New USB device found, idVendor=062a, idProduct=4101, bcdDevice= 1.08

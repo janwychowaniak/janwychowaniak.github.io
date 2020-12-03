@@ -21,6 +21,7 @@ lsblk /dev/sda
 
 An example output for `/dev/sda`:
 
+{:.jwoutput}
 ```
 NAME   MAJ:MIN RM   SIZE RO TYPE MOUNTPOINT
 sda      8:0    0   477G  0 disk 
@@ -41,6 +42,7 @@ sudo fdisk -l /dev/sda
 
 An example output:
 
+{:.jwoutput}
 ```
 Disk /dev/sda: 477 GiB, 512110190592 bytes, 1000215216 sectors
 Units: sectors of 1 * 512 = 512 bytes
@@ -67,6 +69,7 @@ cat /proc/partitions
 
 An example output:
 
+{:.jwoutput}
 ```
 major minor  #blocks  name
 
@@ -95,6 +98,7 @@ sudo hdparm -I /dev/sda
 
 An example output:
 
+{:.jwoutput}
 ```
 /dev/sda:
 
@@ -133,6 +137,7 @@ The `-I` switch above requests identification info directly from the drive, as o
 sudo hdparm -i /dev/sda
 ```
 
+{:.jwoutput}
 ```
  Model=SSDPR-CX400-512, FwRev=SBFM61, SerialNo=SERIALNO
  Config={ Fixed }
@@ -156,6 +161,7 @@ sudo lshw -class storage
 
 Example outputs:
 
+{:.jwoutput}
 ```
   *-disk                    
        description: ATA Disk
@@ -170,6 +176,7 @@ Example outputs:
        configuration: ansiversion=5 logicalsectorsize=512 sectorsize=512 signature=c3ffc3ff
 ```
 
+{:.jwoutput}
 ```
   *-storage                 
        description: SATA controller
@@ -195,6 +202,7 @@ Or identifying the disks just shortly:
 sudo lshw -short -C disk
 ```
 
+{:.jwoutput}
 ```
 H/W path         Device     Class       Description
 ===================================================
@@ -207,6 +215,7 @@ Using _Smartmontools_ to get disk info:
 sudo smartctl -d ata -i /dev/sda
 ```
 
+{:.jwoutput}
 ```
 === START OF INFORMATION SECTION ===
 Device Model:     SSDPR-CX400-512
@@ -226,6 +235,7 @@ SMART support is: Enabled
 The above prints after specifying **-d** `ata` or `sat` or `auto`.
 The below comes for **-d** `scsi` for curiosity/reference:
 
+{:.jwoutput}
 ```
 User Capacity:        512 110 190 592 bytes [512 GB]
 Logical block size:   512 bytes
@@ -243,6 +253,7 @@ There is also a means of fetching specifically _SCSI/SATA_ device information:
 sudo sdparm /dev/sda
 ```
 
+{:.jwoutput}
 ```
     /dev/sda: ATA       SSDPR-CX400-512   61
 Read write error recovery mode page:
@@ -262,6 +273,7 @@ or
 sudo sdparm --inquiry /dev/sda
 ```
 
+{:.jwoutput}
 ```
     /dev/sda: ATA       SSDPR-CX400-512   61
 Device identification VPD page:
@@ -279,17 +291,19 @@ Another one similar to the above:
 lsscsi
 ```
 
+{:.jwoutput}
 ```
 [0:0:0:0]    disk    ATA      SSDPR-CX400-512  61  /dev/sda 
 [4:0:0:0]    disk    TOSHIBA  MK5061GSYN       03  /dev/sdb 
 ```
 
-Finally, from the _proc_ sub-filesystem on SCSI/Sata devices:
+Finally, from the _proc_ pseudo-filesystem on SCSI/Sata devices:
 
 ```bash
 cat /proc/scsi/scsi
 ```
 
+{:.jwoutput}
 ```
 Attached devices:
 Host: scsi0 Channel: 00 Id: 00 Lun: 00
@@ -313,6 +327,7 @@ For disks:
 inxi -D
 ```
 
+{:.jwoutput}
 ```
 Drives:    HDD Total Size: 512.1GB (18.8% used)
            ID-1: /dev/sda model: SSDPR size: 512.1GB
@@ -324,6 +339,7 @@ or, more verbosely:
 inxi -v 7
 ```
 
+{:.jwoutput}
 ```
 (...)
 Drives:    HDD Total Size: 512.1GB (18.8% used)
