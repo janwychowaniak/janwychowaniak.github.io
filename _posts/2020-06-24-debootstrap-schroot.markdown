@@ -10,15 +10,16 @@ After [this](https://logan.tw/posts/2018/02/24/manage-chroot-environments-with-s
 Assumptions:
 
 - _Ubuntu 16.04 Xenial Xerus_ would serve as an example inside chroot,
-- parent (host system) architecture is amd64 and so will be our xenial.
+- parent (host system) architecture is _amd64_ and so will be our _xenial_.
 
 {% highlight bash %}
-$ sudo apt install debootstrap schroot
-$ sudo debootstrap xenial /var/chroot/xenial http://archive.ubuntu.com/ubuntu
+sudo apt install debootstrap schroot
+sudo debootstrap xenial /var/chroot/xenial http://archive.ubuntu.com/ubuntu
 {% endhighlight %}
 
 Contents of `/etc/schroot/chroot.d/xenial.conf`:
 
+{:.jwoutput}
 ```
 [xenial]
 description=Ubuntu 16.04 Xenial Xerus
@@ -31,9 +32,9 @@ type=directory
 How to use (should work without root):
 
 {% highlight bash %}
-$ schroot -l                  # list the chroot environments
-$ schroot -c xenial           # enter a chroot environment
-$ schroot -c xenial -u root   # enter a chroot environment as root
+schroot -l                  # list the chroot environments
+schroot -c xenial           # enter a chroot environment
+schroot -c xenial -u root   # enter a chroot environment as root
 {% endhighlight %}
 
 In case the parent is behind proxy, the "guest" would need to have the parent's proxy settings replicated. The relevant files:
@@ -46,12 +47,47 @@ Also, the guest's **apt** has only the _main_ repository enabled by default. Add
 Once a chroot environment has been entered, certain filesystem resources get mounted, so that life is easier by e.g. having the parent system user home folder shared. To quickly list the mounted resources:
 
 {% highlight bash %}
-$ mount | grep chroot
-$ mount | grep chroot | awk '{print $1 " " $2 " " $3}'
-$ mount | grep chroot | grep "^\/dev" | awk '{print $1 " " $2 " " $3}'
+mount | grep chroot
+mount | grep chroot | awk '{print $1 " " $2 " " $3}'
+mount | grep chroot | grep "^\/dev" | awk '{print $1 " " $2 " " $3}'
 {% endhighlight %}
 
-That's the, kind of, basics.
+or:
+
+```bash
+grep chroot /etc/mtab
+grep chroot /etc/mtab | awk '{print $1 " " $2 " " $3}'
+grep chroot /etc/mtab | grep "^\/dev" | awk '{print $1 " " $2 " " $3}'
+```
+
+That's the, kind of, basics. Some additional tricks follow, though.
+
+Let's list existing schroot sessions:
+
+```bash
+schroot --list --all-sessions
+```
+
+{:.jwoutput}
+```
+session:xenial-a47654e2-db44-422c-addc-40d3f7c87eeb
+session:xenial-c5860ada-fc96-412e-bc7b-f3c668f2b5d8
+```
+
+To operate a session:
+
+```bash
+schroot -b -c xenial -n customsessionname  # start a schroot session (with custom name)
+schroot -r -c customsessionname  # enter an existing schroot session
+schroot -e -c customsessionname  # end a schroot session
+```
+
+Let's also [remove](https://askubuntu.com/a/894026) a schroot, once we are done needing it:  
+
+```bash
+sudo rm -r /var/chroot/xenial  # delete the actual chroot environment
+sudo rm /etc/schroot/chroot.d/xenial.conf  # delete the configuration
+```
 
 ---
 
@@ -72,9 +108,9 @@ The `~/.Xauthority` file:
 Now, with setting the `DISPLAY` env var, an X app can be launched with the likes of:
 
 {% highlight bash %}
-$ export DISPLAY=":0.0" && firefox
+export DISPLAY=":0.0" && firefox
 # or
-$ DISPLAY=":0.0" firefox
+DISPLAY=":0.0" firefox
 {% endhighlight %}
 
 Have fun.
