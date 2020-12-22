@@ -5,6 +5,8 @@ date:   2020-12-01 13:35:18 +0200
 categories: linux windows hardware
 ---
 
+Let's see how one can read and use _S.M.A.R.T._ data and assess disk health of their machines.
+
 ### Lookup: Linux commandline
 
 Getting general disk info and checking whether _S.M.A.R.T._ is enabled:
