@@ -12,8 +12,8 @@ Below follows a simple recipe for creating such guy (_Ubuntu_-based in this case
 
 {% highlight bash %}
 # ------------------------------
-IMAGE="ubuntu:18.04"
-CONTAINER="bionic-disposable0"
+IMAGE="ubuntu:20.04"
+CONTAINER="focal-disposable0"
 # ------------------------------
 
 docker pull $IMAGE
@@ -40,7 +40,8 @@ docker exec -it $CONTAINER apt install -y apt-utils dialog
 docker exec -it $CONTAINER apt -y dist-upgrade
 ## optionally, possibly handy for some tasks:
 docker exec -it $CONTAINER apt install -y ca-certificates  # [https://askubuntu.com/a/1145374], might be useful for adding external keys for whatever may need them
-docker exec -it $CONTAINER apt install -y vim curl python3
+docker exec -it $CONTAINER apt install -y vim curl
+docker exec -it $CONTAINER apt install -y python3 python3-pip
 {% endhighlight %}
 
 {% highlight bash %}
@@ -48,16 +49,49 @@ docker exec -it $CONTAINER apt install -y vim curl python3
 docker exec -it $CONTAINER bash
 {% endhighlight %}
 
+-#-
+
+**NOTE:** (on starting "modes", or methods, for a container)
+
+Some alternative mothods for preventing a container from exiting immediately, that are probably better than using `tail`, override the default _entrypoint_ of the image.
+Let's use `bash` as the new one:
+
+```bash
+IMAGE="ubuntu:20.04"
+
+# attach and enter shell, stop container on shell exit
+CONTAINER="focal-disposable1-it"
+docker run  -it       --name $CONTAINER --entrypoint /bin/bash $IMAGE
+# attach and enter shell, stop and remove container on shell exit
+CONTAINER="focal-disposable2-itrm"
+docker run  -it --rm  --name $CONTAINER --entrypoint /bin/bash $IMAGE
+# detach and run in background; attaching or starting shell is done in a separate step
+CONTAINER="focal-disposable3-itd"
+docker run  -itd      --name $CONTAINER --entrypoint /bin/bash $IMAGE
+```
+
+That's probably the most convenient way of using a container like a throw-away virtual-machine-like thing.
+Some more reading [here](https://www.tutorialworks.com/why-containers-stop/) and [here](https://vsupalov.com/debug-docker-container/).
+
+A note on `docker-run` switches in use:
+
+```
+--rm                Automatically remove the container when it exits
+-i (--interactive)  Keep STDIN open even if not attached.
+-t (--tty)          Allocate a pseudo-TTY and attach to the container's standard input. Can be used e.g. to run a throwaway interactive shell.
+-d (--detach)       Detached mode: run the container in the background. One can reattach to a detached container with docker attach.
+```
+
 ---
 
-#
+-#-
 
 Like with chroot, launching `X` apps within a docker container is also possible. A strong influence is drawn from [here](http://fabiorehm.com/blog/2014/09/11/running-gui-apps-with-docker/).
 
 There will be a custom docker image needed, which can be created with the following `Dockerfile`:
 
 ```bash
-FROM ubuntu:18.04
+FROM ubuntu:20.04
 
 RUN apt-get update
 RUN apt-get install -y apt-utils dialog
