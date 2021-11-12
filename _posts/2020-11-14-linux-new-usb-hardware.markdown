@@ -67,21 +67,56 @@ The **Class=** bits prompt on what a given piece might be.
 
 [This](https://unix.stackexchange.com/a/207833) link offers some more insightful reading on `lsusb`.
 
+Another useful means for reaching a similar goal is `hwinfo`.
+
+```bash
+hwinfo --short --usb
+```
+
+{:.jwoutput}
+```
+keyboard:                                                       
+  /dev/input/event3    A4Tech USB Keyboard
+mouse:
+  /dev/input/mice      Logitech RX 250 Optical Mouse
+disk:
+  /dev/sdb             Kingston DataTraveler 3.0
+hub:
+                       Linux Foundation 2.0 root hub
+                       Intel Hub
+                       Linux Foundation 3.0 root hub
+                       Linux Foundation 2.0 root hub
+                       Intel Hub
+                       Linux Foundation 2.0 root hub
+unknown:
+  /dev/input/event5    A4Tech USB Keyboard
+```
+
+Further, more detailed examination of a particular item from the output above may be accomplished e.g. with:
+
+```bash
+hwinfo --disk --only /dev/sdb
+```
+
 ---
 #
 
 What I sometimes like to do is to see the system's live response exactly after plugging something in.
 
-One happy method for that is to open up two terminals next to each other and to issue the following commands:
+One happy method for that is to open up three terminals next to one another and to issue the following commands:
 
 <table>
 	<tr>
 		<th> Terminal 1 </th>
 		<th> Terminal 2 </th>
+		<th> Terminal 3 </th>
 	</tr>
 	<tr>
 		<td>
 			<code>watch lsusb</code>
+		</td>
+		<td>
+			<code>watch hwinfo --short --usb</code>
 		</td>
 		<td>
 			<code>dmesg -wxH</code>
