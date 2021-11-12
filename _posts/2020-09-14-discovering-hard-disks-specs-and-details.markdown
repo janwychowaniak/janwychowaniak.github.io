@@ -11,6 +11,8 @@ Manufacturers, models, partitions layout and sizes, etc.
 All the commands below I have performed on machines equipped with a single hard disk reporting itself as `/dev/sda`. Therefore this is what all the command examples that follow contain.
 
 
+#### hdparm
+
 Drive identification info:
 
 ```bash
@@ -73,6 +75,8 @@ sudo hdparm -i /dev/sda
  Drive conforms to: Unspecified:  ATA/ATAPI-3,4,5,6,7
 ```
 
+#### lshw
+
 Displaying all disks and storage controllers in the system:
 
 ```bash
@@ -130,6 +134,78 @@ H/W path         Device     Class       Description
 /0/1/0.0.0       /dev/sda   disk        512GB SSDPR-CX400-512
 ```
 
+#### hwinfo
+
+Displaying all disks and storage controllers in the system (another way):
+
+```bash
+hwinfo --disk --storage
+```
+
+{:.jwoutput}
+```
+08: PCI 1f.2: 0106 SATA controller (AHCI 1.0)                   
+  [Created at pci.386]
+  SysFS ID: /devices/pci0000:00/0000:00:1f.2
+  SysFS BusID: 0000:00:1f.2
+  Hardware Class: storage
+  Model: "Intel 8 Series/C220 Series Chipset Family 6-port SATA Controller 1 [AHCI mode]"
+  Vendor: pci 0x8086 "Intel Corporation"
+  Device: pci 0x8c02 "8 Series/C220 Series Chipset Family 6-port SATA Controller 1 [AHCI mode]"
+  SubVendor: pci 0x17aa "Lenovo"
+  SubDevice: pci 0x3097 
+  Revision: 0x04
+  Driver: "ahci"
+  Driver Modules: "ahci"
+  I/O Ports: 0xf0d0-0xf0d7 (rw)
+  I/O Ports: 0xf0c0-0xf0c3 (rw)
+  I/O Ports: 0xf0b0-0xf0b7 (rw)
+  I/O Ports: 0xf0a0-0xf0a3 (rw)
+  I/O Ports: 0xf060-0xf07f (rw)
+  Memory Range: 0xf7d3a000-0xf7d3a7ff (rw,non-prefetchable)
+  IRQ: 27 (9935737 events)
+  Module Alias: "pci:v00008086d00008C02sv000017AAsd00003097bc01sc06i01"
+  Driver Info #0:
+    Driver Status: ahci is active
+    Driver Activation Cmd: "modprobe ahci"
+  Config Status: cfg=new, avail=yes, need=no, active=unknown
+
+26: IDE 100.0: 10600 Disk
+  [Created at block.245]
+  SysFS ID: /class/block/sda
+  SysFS BusID: 1:0:0:0
+  SysFS Device Link: /devices/pci0000:00/0000:00:1f.2/ata2/host1/target1:0:0/1:0:0:0
+  Hardware Class: disk
+  Model: "CT1000MX500SSD1"
+  Device: "CT1000MX500SSD1"
+  Revision: "023"
+  Driver: "ahci", "sd"
+  Driver Modules: "ahci", "sd_mod"
+  Device File: /dev/sda
+  Device Files: /dev/sda, /dev/disk/by-path/pci-0000:00:1f.2-ata-2, /dev/disk/by-id/ata-CT1000MX500SSD1_1940E222815B, /dev/disk/by-id/wwn-0x500a0751e222815b
+  Device Number: block 8:0-8:15
+  BIOS id: 0x80
+  Drive status: no medium
+  Config Status: cfg=new, avail=yes, need=no, active=unknown
+  Attached to: #8 (SATA controller)
+```
+
+Or just shortly:
+
+```bash
+hwinfo --short --disk --storage
+```
+
+{:.jwoutput}
+```
+storage:                                                        
+                       Intel 8 Series/C220 Series Chipset Family 6-port SATA Controller 1 [AHCI mode]
+disk:
+  /dev/sda             CT1000MX500SSD1
+```
+
+#### smartctl
+
 Using _Smartmontools_ to get disk info:
 
 ```bash
@@ -170,6 +246,8 @@ SMART support is:     Unavailable - device lacks SMART capability.
 
 There is also a means of fetching specifically _SCSI/SATA_ device information:
 
+#### sdparm
+
 ```bash
 sudo sdparm /dev/sda
 ```
@@ -206,6 +284,8 @@ Device identification VPD page:
       vendor specific: SSDPR-CX400-512                         SERIALNO           
 ```
 
+#### lsscsi
+
 Another one similar to the above:
 
 ```bash
@@ -217,6 +297,8 @@ lsscsi
 [0:0:0:0]    disk    ATA      SSDPR-CX400-512  61  /dev/sda 
 [4:0:0:0]    disk    TOSHIBA  MK5061GSYN       03  /dev/sdb 
 ```
+
+#### /proc
 
 Finally, from the _proc_ pseudo-filesystem on SCSI/SATA devices:
 
@@ -237,8 +319,7 @@ Host: scsi4 Channel: 00 Id: 00 Lun: 00
 
 More reference on all the above [here](https://www.cyberciti.biz/faq/find-hard-disk-hardware-specs-on-linux/) and [here](https://www.cyberciti.biz/tips/sdparm-linux-scsi-device-attribute.html).
 
----
-#
+#### (bonus) inxi
 
 Apart from that, there is also _inxi_ with its vast and flexible system info reporting capabilities.
 

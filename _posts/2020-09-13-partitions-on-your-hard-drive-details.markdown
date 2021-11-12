@@ -10,6 +10,8 @@ Following is a short cheat sheet with a handful of commands helpful for getting 
 All the commands below I have performed on machines equipped with a single hard disk reporting itself as `/dev/sda`. Therefore this is what all the command examples that follow contain.
 
 
+#### lsblk
+
 Listing block devices:
 
 ```bash
@@ -31,6 +33,8 @@ sda      8:0    0   477G  0 disk
 ├─sda7   8:7    0  18,3G  0 part /
 └─sda8   8:8    0 137,2G  0 part /home
 ```
+
+#### fdisk
 
 Peeking into the device partition table:
 
@@ -59,6 +63,124 @@ Device     Boot     Start        End   Sectors   Size Id Type
 /dev/sda8       618153984  905840639 287686656 137,2G 83 Linux
 ```
 
+#### lshw
+
+This can be used to view partitions (a.k.a volumes here) in the following way:
+
+```bash
+sudo lshw -short -class volume
+```
+
+{:.jwoutput}
+```
+H/W path             Device     Class          Description
+==========================================================
+/0/100/1f.2/0.0.0/1  /dev/sda1  volume         1GiB EXT4 volume
+/0/100/1f.2/0.0.0/2  /dev/sda2  volume         29GiB EFI partition
+/0/100/1f.2/0.0.0/3  /dev/sda3  volume         19GiB EFI partition
+/0/100/1f.2/0.0.0/4  /dev/sda4  volume         870GiB EFI partition
+```
+
+And with more verbosity:
+
+```bash
+sudo lshw -class volume
+```
+
+{:.jwoutput}
+```
+  *-volume:0                
+       description: EXT4 volume
+       vendor: Linux
+       physical id: 1
+       bus info: scsi@1:0.0.0,1
+       logical name: /dev/sda1
+       logical name: /boot
+       version: 1.0
+       size: 1GiB
+       capabilities: journaled extended_attributes large_files huge_files dir_nlink recover 64bit extents ext4 ext2 initialized
+       configuration: created=2020-12-05 02:59:11 filesystem=ext4 label=boot lastmountpoint=/boot modified=2021-10-16 01:09:09 mount.fstype=ext4 mount.options=rw,noatime mounted=2021-10-16 01:09:09 name=bootpart state=mounted
+  *-volume:1
+       description: EFI partition
+       physical id: 2
+       bus info: scsi@1:0.0.0,2
+       logical name: /dev/sda2
+       size: 29GiB
+       capacity: 29GiB
+       width: 1860298432 bits
+       capabilities: encrypted luks initialized
+       configuration: bits=1860298432 filesystem=luks hash=sha256 name=mx19 version=2
+  (...)
+```
+
+#### hwinfo
+
+This can be used to examine partitions in the following way:
+
+```bash
+hwinfo --short --partition
+```
+
+{:.jwoutput}
+```
+partition:                                                      
+  /dev/sda1            Partition
+  /dev/sda2            Partition
+  /dev/sda3            Partition
+  /dev/sda4            Partition
+```
+
+And with more verbosity:
+
+```bash
+hwinfo --partition
+```
+
+{:.jwoutput}
+```
+21: None 00.0: 11300 Partition                                  
+  [Created at block.434]
+  SysFS ID: /class/block/sda/sda1
+  Hardware Class: partition
+  Model: "Partition"
+  Device File: /dev/sda1
+  Device Files: /dev/sda1, /dev/disk/by-uuid/..., /dev/disk/by-partlabel/bootpart, /dev/disk/by-id/..., /dev/disk/by-path/..., /dev/disk/by-partuuid/..., /dev/disk/by-id/..., /dev/disk/by-label/boot
+  Config Status: cfg=new, avail=yes, need=no, active=unknown
+  Attached to: #20 (Disk)
+
+22: None 00.0: 11300 Partition
+  [Created at block.434]
+  SysFS ID: /class/block/sda/sda2
+  Hardware Class: partition
+  Model: "Partition"
+  Device File: /dev/sda2
+  Device Files: /dev/sda2, /dev/disk/by-path/(...)
+  Config Status: cfg=new, avail=yes, need=no, active=unknown
+  Attached to: #20 (Disk)
+
+23: None 00.0: 11300 Partition
+  [Created at block.434]
+  SysFS ID: /class/block/sda/sda3
+  Hardware Class: partition
+  Model: "Partition"
+  Device File: /dev/sda3
+  Device Files: /dev/sda3, /dev/disk/by-id/(...)
+  Config Status: cfg=new, avail=yes, need=no, active=unknown
+  Attached to: #20 (Disk)
+
+24: None 00.0: 11300 Partition
+  [Created at block.434]
+  SysFS ID: /class/block/sda/sda4
+  Hardware Class: partition
+  Model: "Partition"
+  Device File: /dev/sda4
+  Device Files: /dev/sda4, /dev/disk/by-uuid/(...)
+  Config Status: cfg=new, avail=yes, need=no, active=unknown
+  Attached to: #20 (Disk)
+```
+
+#### /proc
+
 Checking in the _proc_ pseudo-filesystem:
 
 ```bash
@@ -86,8 +208,7 @@ major minor  #blocks  name
    8        8  143843328 sda8
 ```
 
----
-#
+#### (bonus) inxi
 
 Apart from that, again, there is also _inxi_ with its vast and flexible system info reporting capabilities.
 
