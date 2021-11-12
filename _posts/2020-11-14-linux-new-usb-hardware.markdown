@@ -147,3 +147,49 @@ kern  :info  : [  +0,000346] hid-generic 0003:062A:4101.0006: input,hiddev0,hidr
 giving quite a bit of insight.
 
 More on reading `dmesg` output in my [other post]({% post_url 2020-10-15-dmesg-how-to-read-it %}).
+
+---
+#
+
+An additional way of examining the USB situation is, as with many other, with `inxi`.
+
+A bird's eye look:
+
+```bash
+inxi --usb
+```
+
+{:.jwoutput}
+```
+USB:       Hub: 1-0:1 info: Full speed (or root) Hub ports: 3 rev: 2.0 
+           Hub: 1-1:2 info: Intel ports: 6 rev: 2.0 
+           Hub: 2-0:1 info: Full speed (or root) Hub ports: 15 rev: 2.0 
+           Device-1: 2-3:15 info: A4Tech type: Keyboard,HID rev: 2.0 
+           Device-2: 2-9:3 info: Logitech RX 250 Optical Mouse type: Mouse rev: 2.0 
+           Hub: 3-0:1 info: Full speed (or root) Hub ports: 3 rev: 2.0 
+           Hub: 3-1:2 info: Intel ports: 8 rev: 2.0 
+           Hub: 4-0:1 info: Full speed (or root) Hub ports: 6 rev: 3.0 
+           Device-3: 4-6:2 info: Kingston DataTraveler 100 G3/G4/SE9 G2 type: Mass Storage rev: 3.1 
+```
+
+A slightly more detailed one:
+
+```bash
+inxi --usb -xxx
+```
+
+{:.jwoutput}
+```
+USB:       Hub: 1-0:1 info: Full speed (or root) Hub ports: 3 rev: 2.0 speed: 480 Mb/s chip ID: 1d6b:0002 
+           Hub: 1-1:2 info: Intel ports: 6 rev: 2.0 speed: 480 Mb/s chip ID: 8087:8008 
+           Hub: 2-0:1 info: Full speed (or root) Hub ports: 15 rev: 2.0 speed: 480 Mb/s chip ID: 1d6b:0002 
+           Device-1: 2-3:15 info: A4Tech type: Keyboard,HID driver: hid-generic,usbhid interfaces: 2 rev: 2.0 speed: 1.5 Mb/s 
+           chip ID: 09da:2268 
+           Device-2: 2-9:3 info: Logitech RX 250 Optical Mouse type: Mouse driver: hid-generic,usbhid interfaces: 1 rev: 2.0 
+           speed: 1.5 Mb/s chip ID: 046d:c050 
+           Hub: 3-0:1 info: Full speed (or root) Hub ports: 3 rev: 2.0 speed: 480 Mb/s chip ID: 1d6b:0002 
+           Hub: 3-1:2 info: Intel ports: 8 rev: 2.0 speed: 480 Mb/s chip ID: 8087:8000 
+           Hub: 4-0:1 info: Full speed (or root) Hub ports: 6 rev: 3.0 speed: 5 Gb/s chip ID: 1d6b:0003 
+           Device-3: 4-6:2 info: Kingston DataTraveler 100 G3/G4/SE9 G2 type: Mass Storage driver: usb-storage interfaces: 1 
+           rev: 3.1 speed: 5 Gb/s chip ID: 0951:1666 serial: <filter> 
+```
