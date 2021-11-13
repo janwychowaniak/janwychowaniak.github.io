@@ -151,7 +151,7 @@ More on reading `dmesg` output in my [other post]({% post_url 2020-10-15-dmesg-h
 ---
 #
 
-An additional way of examining the USB situation is, as with many other, with `inxi`.
+An additional way of examining the USB situation comes, as with many other, with `inxi`.
 
 A bird's eye look:
 
