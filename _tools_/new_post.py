@@ -62,7 +62,7 @@ if __name__ == '__main__':
 
     diag('-----'*10)
     diag(f'Post title         : {post_title}')
-    diag(f'Post date          : {post_date}')
+    diag(f'Post date          : {post_date} +0200')
     diag(f'Post categories    : {post_categories}')
     diag(f'Suggested filename : {suggested_filename}')
     diag('-----'*10)
