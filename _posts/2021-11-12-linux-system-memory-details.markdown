@@ -290,3 +290,17 @@ Memory Device
 	Maximum Voltage: 1.5 V
 	Configured Voltage: 1.5 V
 ```
+
+---
+#
+
+More memory needed? How to find a module that would match correctly?
+
+Apart from some obvious characteristics, like the desired capacity or correct form factor, some more details should be taken into consideration, with at least the following matching also:
+
+* `type` - whether _DDR2_, _DDR3_, _DDR4_ etc; with detail, like _synchronous_
+* `clock` - or `rate` or `frequency` (in MHz); might also be possibly indicated as `speed` [MT/s]
+* `latency` - or `CAS Latency` or `CL`
+* `voltage` - minimum, maximum, configured if known
+
+Some of these details are immediately known from the output of the tools above, some need to be searched for with the part number.
